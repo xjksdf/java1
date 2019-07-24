@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  namespace  必须和接口的全路径相同-->
+<mapper namespace="com.bdqn.mapper.ItemsMapper">
+    <sql id="basesql">i.id,i.name,i.price,i.detail,i.pic,i.createtime</sql>
+    <insert id="insert">
+        insert into items(name,price,detail,createtime) values(#{name},99,#{detail},#{createtime})
+    </insert>
+    <update id="updateItems">
+        update items
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="price!=null and price!=''">
+                price=#{price},
+            </if>
+            <if test="detail!=null and detail!=''">
+                detail=#{detail},
+            </if>
+            <if test="pic!=null and pic!=''">
+                pic=#{pic},
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <select id="findAllItems" resultType="com.bdqn.pojo.Items">
+        select
+        <include refid="basesql"></include>
+        from items i
+        <where>
+            <if test="id!=null and id!=''">
+                i.id = #{id}
+            </if>
+            <if test="name!=null and name!=''">
+                i.name = #{name}
+            </if>
+            <if test="price!=null and price!=0">
+                and i.price = #{price}
+            </if>
+        </where>
+    </select>
+    <select id="findItemById" resultType="com.bdqn.pojo.Items">
+        select
+        <include refid="basesql"></include>
+        from items i where i.id=#{id}
+    </select>
+</mapper>
